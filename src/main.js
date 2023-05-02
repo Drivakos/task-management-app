@@ -6,7 +6,8 @@ import { db } from './firebase'
 
 
 console.log(db)
-
+const tasksRef = db.collection('tasks')
+console.log(tasksRef)
 createApp(App)
     .use(store)
     .use(Vuex)

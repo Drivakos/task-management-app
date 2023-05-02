@@ -7,9 +7,15 @@ export default createStore({
     },
     mutations: {
         async addTask(state, task) {
-            const docRef = await db.collection('tasks').add(task)
-            state.tasks.push({ ...task, id: docRef.id })
-            console.log('Task added with ID: ', docRef.id)
+            try {
+                const docRef = await db.collection('tasks').add(task)
+                const newTask = { ...task, id: docRef.id }
+                state.tasks.push(newTask)
+                return newTask
+            } catch (error) {
+                console.error(error)
+                throw new Error('Failed to add task')
+            }
         },
         async editTask(state, { id, task }) {
             await db.collection('tasks').doc(id).set(task)

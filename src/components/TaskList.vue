@@ -21,14 +21,12 @@
 </template>
 
 <script>
-import { saveTasks, getTasks } from '@/storage.js'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'TaskList',
-  data() {
-    return {
-      tasks: getTasks(),
-    }
+  computed: {
+    ...mapGetters(['tasks'])
   },
   methods: {
     addTask() {
@@ -38,10 +36,8 @@ export default {
       this.$router.push(`/edit/${index}`)
     },
     deleteTask(index) {
-      this.tasks.splice(index, 1)
-      saveTasks(this.tasks)
+      this.$store.commit('deleteTask', index)
     },
   },
-
 }
 </script>
