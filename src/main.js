@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import './registerServiceWorker'
+import store from './store'
+import Vuex from 'vuex' // import Vuex
 
-createApp(App).mount('#app')
+createApp(App).use(store).use(Vuex).mount('#app') // use Vuex as a plugin
