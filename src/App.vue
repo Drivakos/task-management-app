@@ -18,6 +18,9 @@ export default {
   },
   computed: {
     ...mapState(['tasks'])
+  },
+  created() {
+    this.$store.dispatch('fetchTasks')
   }
 }
 </script>
