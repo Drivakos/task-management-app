@@ -1,26 +1,31 @@
+<!-- TaskApp.vue -->
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="task-app">
+    <h1>Task Manager</h1>
+    <task-form @new-task="addTask"></task-form>
+    <task-list :tasks="tasks"></task-list>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TaskForm from './components/TaskForm.vue'
+import TaskList from './components/TaskList.vue'
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    TaskForm,
+    TaskList
+  },
+  data() {
+    return {
+      tasks: []
+    }
+  },
+  methods: {
+    addTask(newTask) {
+      this.tasks.push(newTask)
+      console.log(this.tasks) // check if the new task is added to the array
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
