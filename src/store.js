@@ -1,4 +1,4 @@
-import { db } from '@/main.js'
+import { db } from '@/firebase'
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -9,6 +9,7 @@ export default createStore({
         async addTask(state, task) {
             const docRef = await db.collection('tasks').add(task)
             state.tasks.push({ ...task, id: docRef.id })
+            console.log('Task added with ID: ', docRef.id)
         },
         async editTask(state, { id, task }) {
             await db.collection('tasks').doc(id).set(task)
