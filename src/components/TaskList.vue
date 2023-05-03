@@ -9,7 +9,7 @@
         <div class="task-header">
           <h3>{{ task.title }}</h3>
           <button @click="editTask(index)">Edit</button>
-          <button @click="deleteTask(index)">Delete</button>
+          <button @click="deleteTask(task.id)">Delete</button>
         </div>
         <div class="task-details">
           <p>{{ task.description }}</p>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'TaskList',
@@ -29,15 +29,13 @@ export default {
     ...mapGetters(['tasks'])
   },
   methods: {
+    ...mapActions(['deleteTask']),
     addTask() {
       this.$router.push('/new')
     },
     editTask(index) {
       this.$router.push(`/edit/${index}`)
-    },
-    deleteTask(index) {
-      this.$store.commit('deleteTask', index)
-    },
-  },
+    }
+  }
 }
 </script>
