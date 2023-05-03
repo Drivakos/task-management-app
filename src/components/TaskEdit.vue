@@ -41,3 +41,66 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.task-edit {
+  background-color: #222;
+  color: #eee;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.task-edit h2 {
+  margin: 0;
+}
+
+.task-edit form {
+  display: flex;
+  flex-direction: column;
+}
+
+.task-edit label {
+  margin-top: 1rem;
+}
+
+.task-edit input,
+.task-edit textarea {
+  background-color: #444;
+  color: #eee;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.task-edit input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.task-edit .buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.task-edit button {
+  background-color: #777;
+  color: #fff;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.task-edit button:hover {
+  background-color: #555;
+}
+
+.task-edit button[type="submit"] {
+  background-color: #0a9;
+}
+
+.task-edit button[type="submit"]:hover {
+  background-color: #0c7;
+}
+</style>

@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import store from './store'
-import Vuex from 'vuex' // import Vuex
+import Vuex from 'vuex'
 import { db } from './firebase'
 
 
