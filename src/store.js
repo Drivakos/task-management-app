@@ -18,9 +18,15 @@ export default createStore({
             }
         },
         async editTask(state, { id, task }) {
-            await db.collection('tasks').doc(id).set(task)
-            const index = state.tasks.findIndex(t => t.id === id)
-            state.tasks.splice(index, 1, task)
+            try {
+                console.log('task',task, 'id', id)
+                await db.collection('tasks').doc(id).set(task)
+                const index = state.tasks.findIndex(t => t.id === id)
+                state.tasks.splice(index, 1, task)
+            } catch (error) {
+                console.error(error)
+                throw new Error('Failed to edit task')
+            }
         },
         async deleteTask(state, id) {
             await db.collection('tasks').doc(id).delete()
