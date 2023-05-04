@@ -14,8 +14,8 @@
           </button>
         </div>
         <div class="task-details">
-          <p>{{ task.description }}</p>
-          <p>{{ task.date }}</p>
+          <p>Description: {{ task.description }}</p>
+          <p>Task created at: {{ task.date }}</p>
           <p>Time spent: {{ formatTime(task.timeElapsed) }}</p>
           <p>{{ task.formattedTime }}</p>
         </div>
@@ -145,6 +145,8 @@ export default {
 }
 
 .task-header h3 {
+  max-width: fit-content;
+  overflow: hidden;
   margin: 0;
   font-weight: 700;
   color: #0a9;
