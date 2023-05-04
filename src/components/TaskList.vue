@@ -7,18 +7,20 @@
       <div class="task" v-for="(task, index) in tasks" :key="index">
         <div class="task-header">
           <h3>{{ task.title }}</h3>
-          <button @click="showEditTask(task)">Edit</button>
-          <button @click="deleteTask(task.id)">Delete</button>
           <button class="timer-button" @click="toggleTimer(task)">
             <i :class="timerIconClass(task)"></i>
           </button>
+          <button @click="showEditTask(task)">Edit</button>
+          <button @click="deleteTask(task.id)">Delete</button>
         </div>
         <div class="task-details">
           <p>Description: {{ task.description }}</p>
           <p>Task created at: {{ task.date }}</p>
           <p>Time spent: {{ formatTime(task.timeElapsed) }}</p>
           <p>{{ task.formattedTime }}</p>
+          <p>Task status: {{ task.status }}</p>
         </div>
+        <button class="complete-btn" v-if="!task.completed" @click="completeTask(task)">Complete</button>
       </div>
     </div>
     <task-edit v-if="selectedTask" :task="selectedTask" @update-task="updateTask" @cancel-edit="cancelEdit"></task-edit>
@@ -87,6 +89,9 @@ export default {
     },
     timerIconClass(task) {
       return task.timer ? 'fas fa-pause' : 'fas fa-play'
+    },
+    completeTask(task) {
+      task.status = 'Completed'
     }
   }
 }
@@ -152,7 +157,7 @@ export default {
   color: #0a9;
 }
 
-.task-header button {
+.task-header button , .complete-btn{
   background-color: #0a9;
   color: #fff;
   padding: 0.5rem;
@@ -160,7 +165,7 @@ export default {
   cursor: pointer;
 }
 
-.task-header button:hover {
+.task-header button:hover ,.complete-btn:hover {
   background-color: #0c7;
 }
 
