@@ -1,14 +1,15 @@
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAb-NeIlxNhGTB64t0ZzNzybH6khV1vQdw",
-    authDomain: "my-task-manager-905aa.firebaseapp.com",
-    projectId: "my-task-manager-905aa",
-    storageBucket: "my-task-manager-905aa.appspot.com",
-    messagingSenderId: "575270454448",
-    appId: "1:575270454448:web:8cb032b135e691434e2775"
-};
+const firebaseConfig = ({
+    apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+    authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.VUE_APP_FIREBASE_APP_ID
+})
+
 firebase.initializeApp(firebaseConfig)
 
 export const db = firebase.firestore()
