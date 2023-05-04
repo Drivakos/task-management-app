@@ -132,4 +132,10 @@ export default {
 .task-details p:last-child {
   margin-bottom: 0;
 }
+
+.task-header, .task-details {
+  width: 100%;
+  text-after-overflow: elipsis;
+  overflow: clip;
+}
 </style>
