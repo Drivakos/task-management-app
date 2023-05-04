@@ -95,7 +95,7 @@ export default {
 
 .task {
   margin-bottom: 1rem;
-  border: 1px solid #444;
+  border: 1px solid #0a9;
   border-radius: 0.5rem;
   padding: 1rem;
 }
@@ -110,19 +110,20 @@ export default {
 
 .task-header h3 {
   margin: 0;
+  font-weight: 700;
+  color: #0a9;
 }
 
 .task-header button {
-  background-color: #777;
+  background-color: #0a9;
   color: #fff;
   padding: 0.5rem;
-  border: none;
   border-radius: 0.5rem;
   cursor: pointer;
 }
 
 .task-header button:hover {
-  background-color: #555;
+  background-color: #0c7;
 }
 
 .task-details p {
