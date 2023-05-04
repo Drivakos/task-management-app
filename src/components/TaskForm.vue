@@ -25,7 +25,9 @@ export default {
     return {
       taskTitle: '',
       taskDescription: '',
-      taskDate: new Date().toISOString().slice(0, 10)
+      taskDate: new Date().toISOString().slice(0, 10),
+      timer: null,
+      timeElapsed: 0
     }
   },
   methods: {
@@ -33,7 +35,9 @@ export default {
       const newTask = {
         title: this.taskTitle,
         description: this.taskDescription,
-        date: this.taskDate
+        date: this.taskDate,
+        timer: null,
+        timeElapsed: 0
       }
 
       this.$store.dispatch('addTask', newTask)

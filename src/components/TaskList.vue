@@ -9,10 +9,15 @@
           <h3>{{ task.title }}</h3>
           <button @click="showEditTask(task)">Edit</button>
           <button @click="deleteTask(task.id)">Delete</button>
+          <button class="timer-button" @click="toggleTimer(task)">
+            <i :class="timerIconClass(task)"></i>
+          </button>
         </div>
         <div class="task-details">
           <p>{{ task.description }}</p>
           <p>{{ task.date }}</p>
+          <p>Time spent: {{ formatTime(task.timeElapsed) }}</p>
+          <p>{{ task.formattedTime }}</p>
         </div>
       </div>
     </div>
@@ -35,13 +40,22 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['tasks'])
+    ...mapGetters(['tasks']),
+    formattedTime() {
+      if (this.selectedTask) {
+        const start = this.selectedTask.timeStarted
+        const now = new Date()
+        const diff = now - start
+        const hours = Math.floor(diff / (1000 * 60 * 60))
+        const minutes = Math.floor(diff / (1000 * 60)) % 60
+        const seconds = Math.floor(diff / 1000) % 60
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      }
+      return '00:00:00'
+    }
   },
   methods: {
     ...mapActions(['deleteTask', 'editTask']),
-    addTask() {
-      this.$router.push('/new')
-    },
     showEditTask(task) {
       this.selectedTask = task
     },
@@ -51,6 +65,28 @@ export default {
     },
     cancelEdit() {
       this.selectedTask = null
+    },
+    toggleTimer(task) {
+      if (!task.timer) {
+        task.timer = 0
+        task.status = 'In progress'
+        task.timer = setInterval(() => {
+          task.timeElapsed++
+        }, 1000)
+      } else {
+        clearInterval(task.timer)
+        task.timer = 0
+        task.status = 'Paused'
+        this.editTask({ id: task.id, task })
+      }
+    },
+    formatTime(time) {
+      let minutes = Math.floor(time / 60);
+      let seconds = time % 60;
+      return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    },
+    timerIconClass(task) {
+      return task.timer ? 'fas fa-pause' : 'fas fa-play'
     }
   }
 }
@@ -102,7 +138,7 @@ export default {
 
 .task-header {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: 1fr auto auto auto;
   grid-gap: 0.5rem;
   align-items: center;
   margin-bottom: 0.5rem;
