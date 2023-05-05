@@ -19,7 +19,6 @@ export default createStore({
         },
         async editTask(state, { id, task }) {
             try {
-                console.log('task',task, 'id', id)
                 await db.collection('tasks').doc(id).set(task)
                 const index = state.tasks.findIndex(t => t.id === id)
                 state.tasks.splice(index, 1, task)
@@ -32,6 +31,16 @@ export default createStore({
             await db.collection('tasks').doc(id).delete()
             const index = state.tasks.findIndex(t => t.id === id)
             state.tasks.splice(index, 1)
+        },
+        async completeTask(state, { id }) {
+            try {
+                await db.collection('tasks').doc(id).set({status: 'Completed' }, { merge: true })
+                const index = state.tasks.findIndex(t => t.id === id)
+                state.tasks[index].status = 'Completed'
+            } catch (error) {
+                console.error(error)
+                throw new Error('Failed to complete task')
+            }
         },
         setTasks(state, tasks) {
             state.tasks = tasks
@@ -51,6 +60,9 @@ export default createStore({
             const snapshot = await db.collection('tasks').get()
             const tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
             commit('setTasks', tasks)
+        },
+        async completeTask({ commit }, id) {
+            commit('completeTask', id)
         }
     },
     getters: {
