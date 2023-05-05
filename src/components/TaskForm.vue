@@ -27,7 +27,8 @@ export default {
       taskDescription: '',
       taskDate: new Date().toISOString().slice(0, 10),
       timer: null,
-      timeElapsed: 0
+      timeElapsed: 0,
+      status: 'Created'
     }
   },
   methods: {
@@ -37,7 +38,8 @@ export default {
         description: this.taskDescription,
         date: this.taskDate,
         timer: null,
-        timeElapsed: 0
+        timeElapsed: 0,
+        status: 'Created'
       }
 
       this.$store.dispatch('addTask', newTask)
