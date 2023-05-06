@@ -1,4 +1,5 @@
-# my-pwa
+# task-management-app
+task-management-app for my thesis
 
 ## Project setup
 ```
