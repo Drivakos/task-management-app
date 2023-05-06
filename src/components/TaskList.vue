@@ -1,29 +1,59 @@
 <template>
-  <div class="task-list">
-    <div class="task-list-header">
-      <h2>Task List</h2>
-    </div>
-    <div class="task-list-content">
-      <div class="task" v-for="(task, index) in incompleteTasks" :key="index">
-        <div class="task-header">
-          <h3>{{ task.title }}</h3>
-          <button class="timer-button" @click="toggleTimer(task)">
-            <i :class="timerIconClass(task)"></i>
-          </button>
-          <button @click="showEditTask(task)">Edit</button>
-          <button @click="deleteTask(task.id)">Delete</button>
-        </div>
-        <div class="task-details">
-          <p>Description: {{ task.description }}</p>
-          <p>Task created at: {{ task.date }}</p>
-          <p>Time spent: {{ formatTime(task.timeElapsed) }}</p>
-          <p>{{ task.formattedTime }}</p>
-          <p>Task status: {{ task.status }}</p>
-        </div>
-        <button v-if="!task.completed" @click="completeTask({id: task.id})">Complete</button>
+  <div class="tasks-wrapper">
+    <div class="task-list">
+      <div class="task-list-header">
+        <h2>New Tasks List</h2>
       </div>
+      <div class="task-list-content">
+        <div class="task" v-for="(task, index) in incompleteTasks" :key="index">
+          <div class="task-header">
+            <h3>{{ task.title }}</h3>
+            <button class="timer-button" @click="toggleTimer(task)">
+              <i :class="timerIconClass(task)"></i>
+            </button>
+            <button @click="showEditTask(task)">Edit</button>
+            <button @click="deleteTask(task.id)">Delete</button>
+          </div>
+          <div class="task-details">
+            <p>Description: {{ task.description }}</p>
+            <p>Task created at: {{ task.date }}</p>
+            <p>Time spent: {{ formatTime(task.timeElapsed) }}</p>
+            <p>{{ task.formattedTime }}</p>
+            <p>Task status: {{ task.status }}</p>
+            <button class="complete-btn" v-if="!task.completed" @click="completeTask({id: task.id})">Complete</button>
+          </div>
+        </div>
+      </div>
+      <task-edit v-if="selectedTask" :task="selectedTask" @update-task="updateTask"
+                 @cancel-edit="cancelEdit"></task-edit>
     </div>
-    <task-edit v-if="selectedTask" :task="selectedTask" @update-task="updateTask" @cancel-edit="cancelEdit"></task-edit>
+    <div class="task-list-completed">
+      <div class="task-list-header">
+        <h2>Completed Tasks List</h2>
+      </div>
+      <div class="task-list-content">
+        <div class="task" v-for="(task, index) in completedTasks" :key="index">
+          <div class="task-header">
+            <h3>{{ task.title }}</h3>
+            <button class="timer-button" @click="toggleTimer(task)">
+              <i :class="timerIconClass(task)"></i>
+            </button>
+            <button @click="showEditTask(task)">Edit</button>
+            <button @click="deleteTask(task.id)">Delete</button>
+          </div>
+          <div class="task-details">
+            <p>Description: {{ task.description }}</p>
+            <p>Task created at: {{ task.date }}</p>
+            <p>Time spent: {{ formatTime(task.timeElapsed) }}</p>
+            <p>{{ task.formattedTime }}</p>
+            <p>Task status: {{ task.status }}</p>
+            <button class="complete-btn" v-if="!task.completed" @click="incompleteTask({id: task.id})">incomplete</button>
+          </div>
+        </div>
+      </div>
+      <task-edit v-if="selectedTask" :task="selectedTask" @update-task="updateTask"
+                 @cancel-edit="cancelEdit"></task-edit>
+    </div>
   </div>
 </template>
 
@@ -46,6 +76,9 @@ export default {
     incompleteTasks() {
       return this.tasks.filter((task) => task.status !== 'Completed')
     },
+    completedTasks() {
+      return this.tasks.filter((task) => task.status === 'Completed')
+    },
     formattedTime() {
       if (this.selectedTask) {
         const start = this.selectedTask.timeStarted
@@ -60,7 +93,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['deleteTask', 'editTask', 'completeTask']),
+    ...mapActions(['deleteTask', 'editTask', 'completeTask','incompleteTask']),
     showEditTask(task) {
       this.selectedTask = task
     },
@@ -103,7 +136,7 @@ export default {
   grid-gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
-.task-list {
+.task-list, .task-list-completed {
   background-color: #222;
   color: #eee;
   padding: 1rem;

@@ -42,6 +42,16 @@ export default createStore({
                 throw new Error('Failed to complete task')
             }
         },
+        async incompleteTask(state, { id }) {
+            try {
+                await db.collection('tasks').doc(id).set({ status: 'Pending' }, { merge: true })
+                const index = state.tasks.findIndex(t => t.id === id)
+                state.tasks[index].status = 'Pending'
+            } catch (error) {
+                console.error(error)
+                throw new Error('Failed to incomplete task')
+            }
+        },
         setTasks(state, tasks) {
             state.tasks = tasks
         }
@@ -63,6 +73,9 @@ export default createStore({
         },
         async completeTask({ commit }, id) {
             commit('completeTask', id)
+        },
+        async incompleteTask({ commit }, id) {
+            commit('incompleteTask', id)
         }
     },
     getters: {
