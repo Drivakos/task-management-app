@@ -1,58 +1,63 @@
 <template class="wrapper">
-  <div class="task-app">
-    <h1>Task Manager</h1>
-    <task-form></task-form>
-    <task-list :tasks="tasks"></task-list>
-  </div>
+  <nav>
+    <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
+    <router-link to="/register" v-if="!isLoggedIn">Register</router-link>
+    <a class="logo-wrapper" href="/">
+      <img src="./assets/task-logo.png" alt="logo" />
+    </a>
+    <button @click="signOutUser" v-if="isLoggedIn">Logout</button>
+  </nav>
+ <router-view/>
 </template>
 
-<script>
-import TaskForm from './components/TaskForm.vue'
-import TaskList from './components/TaskList.vue'
-import { mapState } from 'vuex'
-
-export default {
-  components: {
-    TaskForm,
-    TaskList
-  },
-  computed: {
-    ...mapState(['tasks'])
-  },
-  created() {
-    this.$store.dispatch('fetchTasks')
-  }
-}
+<style scoped>
+</style>
+<script setup>
+import {onMounted, ref } from "vue";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+const isLoggedIn = ref(false);
+let auth = getAuth()
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLoggedIn.value = true;
+      console.log(isLoggedIn.value)
+    } else {
+      isLoggedIn.value = false;
+      console.log(isLoggedIn.value)
+    }
+  });
+});
+const signOutUser = () => {
+  signOut(auth)
+    .then(() => {
+      alert("logged out successfully");
+      window.location.reload();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 </script>
 
 <style scoped>
-body {
-  background-color: #222;
-}
-.task-app {
-  background-color: #222;
-  color: #eee;
-  padding: 2rem;
-  height: 100vh;
-}
+  nav button {
+    background-color: #0a9;
+    color: #fff;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
 
-.task-app h1 {
-  margin-bottom: 2rem;
-}
+  nav button:hover {
+    background-color: #0c7;
+  }
 
-@media (min-width: 768px) {
-  .task-app {
-    display: grid;
-    grid-template-columns: 2fr;
-    grid-gap: 2rem;
-    max-width: 80%;
+  .logo-wrapper img {
+    max-width: 300px;
+    display: block;
     margin: 0 auto;
   }
-}
-
-@media (max-width: 767px) {
-  .task-app {
-    padding: 1rem;
-  }
-}
 </style>
