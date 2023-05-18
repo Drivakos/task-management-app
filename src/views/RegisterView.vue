@@ -2,10 +2,10 @@
   <div class="register-container">
     <h1>Create an account</h1>
     <div class="form-group">
-      <input type="text" placeholder="Email" v-model="email" class="form-input" />
+      <input type="text" placeholder=" Email" v-model="email" class="form-input" />
     </div>
     <div class="form-group">
-      <input type="password" placeholder="Password" v-model="password" class="form-input" />
+      <input type="password" placeholder=" Password" v-model="password" class="form-input" />
     </div>
     <div class="form-group">
       <button @click="register" class="form-button">Submit</button>
@@ -24,8 +24,8 @@ const register = () => {
   createUserWithEmailAndPassword(getAuth(), email.value, password.value)
       .then((data) => {
         console.log(data)
-        console.log('registered successfully')
-        console.log(getAuth.currentUser)
+        let auth = getAuth().currentUser;
+        console.log(auth)
         router.push('/')
       })
       .catch((error) => {
@@ -42,7 +42,7 @@ const register = () => {
   padding: 20px;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -57,7 +57,7 @@ h1 {
 
 .form-input {
   width: 100%;
-  padding: 10px;
+  padding: 10px 0;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
