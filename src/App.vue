@@ -2,6 +2,9 @@
   <nav>
     <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
     <router-link to="/register" v-if="!isLoggedIn">Register</router-link>
+    <a class="logo-wrapper" href="/">
+      <img src="./assets/task-logo.png" alt="logo" />
+    </a>
     <button @click="signOutUser" v-if="isLoggedIn">Logout</button>
   </nav>
  <router-view/>
@@ -47,7 +50,14 @@ const signOutUser = () => {
     cursor: pointer;
     margin-top: 1rem;
   }
+
   nav button:hover {
     background-color: #0c7;
+  }
+
+  .logo-wrapper img {
+    max-width: 300px;
+    display: block;
+    margin: 0 auto;
   }
 </style>
