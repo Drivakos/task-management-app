@@ -23,6 +23,8 @@ export default {
   },
   created() {
     this.$store.dispatch('fetchTasks')
+  },
+  mounted() {
     this.$store.dispatch('fetchCurrentUser')
   }
 }

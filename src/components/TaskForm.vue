@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 
 export default {
   data() {
@@ -30,7 +30,7 @@ export default {
       taskDate: new Date().toISOString().slice(0, 10),
       timer: null,
       timeElapsed: 0,
-      status: 'Created',
+      status: 'Created'
     }
   },
   methods: {
@@ -55,7 +55,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['userData'])
+    ...mapGetters(['userData']),
+    ...mapState(['tasks'])
   }
 }
 </script>

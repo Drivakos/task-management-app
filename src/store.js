@@ -56,10 +56,10 @@ export default createStore({
             }
         },
         setTasks(state, tasks) {
+            console.log(tasks)
             state.tasks = tasks
         },
         setCurrentUser(state, user) {
-            console.log(user, 'setCurrentUser')
             state.userData = user
         }
     },
@@ -76,18 +76,24 @@ export default createStore({
         async fetchTasks({ commit }) {
             try {
                 // Fetch the current user
-                const currentUser = await this.$store.dispatch('fetchCurrentUser');
+                const auth = getAuth();
+                const getCurrentUser = () =>
+                    new Promise((resolve, reject) => {
+                        onAuthStateChanged(auth, resolve, reject);
+                    });
 
+                const currentUser = await getCurrentUser();
+                console.log(currentUser.uid)
                 // Fetch tasks where UserId matches currentUser.uid
-                const snapshot = await db.collection('tasks').where('UserId', '==', currentUser.uid).get();
+                const snapshot = await db.collection('tasks').where('userId', '==', currentUser.uid).get()
 
                 // Map the documents to tasks array
-                const tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 
                 // Update the tasks in the store
                 commit('setTasks', tasks);
             } catch (error) {
-                console.error('Error fetching tasks:', error);
+                console.error('Error fetching tasks:', error)
             }
         },
         async completeTask({ commit }, id) {
