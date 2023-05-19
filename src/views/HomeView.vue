@@ -9,6 +9,7 @@
 <script>
 import TaskForm from '../components/TaskForm.vue'
 import TaskList from '../components/TaskList.vue'
+import { mapGetters } from 'vuex';
 import { mapState } from 'vuex'
 
 export default {
@@ -17,10 +18,14 @@ export default {
     TaskList
   },
   computed: {
-    ...mapState(['tasks'])
+    ...mapState(['tasks']),
+    ...mapGetters(['userData'])
   },
   created() {
     this.$store.dispatch('fetchTasks')
+  },
+  mounted() {
+    this.$store.dispatch('fetchCurrentUser')
   }
 }
 </script>
