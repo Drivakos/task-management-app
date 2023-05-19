@@ -1,9 +1,12 @@
 import { db } from '@/firebase'
 import { createStore } from 'vuex'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 
 export default createStore({
     state: {
-        tasks: []
+        tasks: [],
+        userData: [],
     },
     mutations: {
         async addTask(state, task) {
@@ -54,6 +57,10 @@ export default createStore({
         },
         setTasks(state, tasks) {
             state.tasks = tasks
+        },
+        setCurrentUser(state, user) {
+            console.log(user, 'setCurrentUser')
+            state.userData = user
         }
     },
     actions: {
@@ -67,18 +74,57 @@ export default createStore({
             commit('deleteTask', id)
         },
         async fetchTasks({ commit }) {
-            const snapshot = await db.collection('tasks').get()
-            const tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-            commit('setTasks', tasks)
+            try {
+                // Fetch the current user
+                const currentUser = await this.$store.dispatch('fetchCurrentUser');
+
+                // Fetch tasks where UserId matches currentUser.uid
+                const snapshot = await db.collection('tasks').where('UserId', '==', currentUser.uid).get();
+
+                // Map the documents to tasks array
+                const tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Update the tasks in the store
+                commit('setTasks', tasks);
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
         },
         async completeTask({ commit }, id) {
             commit('completeTask', id)
         },
         async incompleteTask({ commit }, id) {
             commit('incompleteTask', id)
-        }
+        },
+        async fetchCurrentUser({ commit }) {
+            try {
+                const auth = getAuth();
+                const getCurrentUser = () =>
+                    new Promise((resolve, reject) => {
+                        onAuthStateChanged(auth, resolve, reject);
+                    });
+
+                const currentUser = await getCurrentUser();
+                const email = currentUser.email;
+                const login = currentUser.displayName;
+                const userId = currentUser.uid;
+                const userMeta = currentUser.metadata
+                // Create an object with user data
+                const userData = {
+                    email: email,
+                    login: login,
+                    userId: userId,
+                    userMeta: userMeta
+                };
+
+                commit('setCurrentUser', userData);
+            } catch (error) {
+                console.error('Error fetching current user:', error);
+            }
+        },
     },
     getters: {
-        tasks: state => state.tasks
+        tasks: state => state.tasks,
+        userData: state => state.userData,
     }
 })

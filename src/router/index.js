@@ -15,11 +15,6 @@ const auth = getAuth();
 const getCurrentUser = () =>
     new Promise((resolve, reject) => {
         onAuthStateChanged(auth, resolve, reject);
-        // Alternatively, you can use:
-        // const unsubscribe = onAuthStateChanged(auth, user => {
-        //   unsubscribe();
-        //   resolve(user);
-        // }, reject);
     });
 
 router.beforeEach(async (to, from, next) => {

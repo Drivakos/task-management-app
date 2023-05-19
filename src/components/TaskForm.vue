@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data() {
     return {
@@ -28,7 +30,7 @@ export default {
       taskDate: new Date().toISOString().slice(0, 10),
       timer: null,
       timeElapsed: 0,
-      status: 'Created'
+      status: 'Created',
     }
   },
   methods: {
@@ -39,7 +41,10 @@ export default {
         date: this.taskDate,
         timer: null,
         timeElapsed: 0,
-        status: 'Created'
+        status: 'Created',
+        userId: this.userData.userId,
+        createdAt: new Date(),
+        updatedAt: null,
       }
 
       this.$store.dispatch('addTask', newTask)
@@ -48,6 +53,9 @@ export default {
       this.taskDescription = ''
       this.taskDate = new Date().toISOString().slice(0, 10)
     }
+  },
+  computed: {
+    ...mapGetters(['userData'])
   }
 }
 </script>
