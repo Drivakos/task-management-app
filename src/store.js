@@ -56,7 +56,6 @@ export default createStore({
             }
         },
         setTasks(state, tasks) {
-            console.log(tasks)
             state.tasks = tasks
         },
         setCurrentUser(state, user) {
@@ -83,7 +82,6 @@ export default createStore({
                     });
 
                 const currentUser = await getCurrentUser();
-                console.log(currentUser.uid)
                 // Fetch tasks where UserId matches currentUser.uid
                 const snapshot = await db.collection('tasks').where('userId', '==', currentUser.uid).get()
 

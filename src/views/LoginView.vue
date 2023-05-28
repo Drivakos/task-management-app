@@ -28,12 +28,9 @@ const errorMessage = ref('')//error message
 const successMessage = ref('')//success message
 const register = () => {
   signInWithEmailAndPassword(getAuth(), email.value, password.value)
-      .then((data) => {
-        console.log(data)
+      .then(() => {
         let auth = getAuth().currentUser;
         if (auth) {
-          console.log(auth)
-          console.log('logged in successfully')
           successMessage.value = 'logged in successfully'
           router.push('/')
         }
