@@ -1,7 +1,9 @@
 <template>
   <header class="header">
     <div class="logo">
+      <a href="/">
       <img src="../assets/task-logo.png" alt="Logo"/>
+      </a>
     </div>
     <div class="burger-menu-wrapper">
       <div class="burger-menu" @click="toggleMenu">
@@ -11,6 +13,9 @@
         <div v-show="isMenuOpen" class="close-icon">X</div>
       </div>
       <ul v-show="isMenuOpen" class="menu">
+        <li class="menu-item">
+          {{ userData.email }}
+        </li>
         <li class="menu-item">
           <router-link to="/login" v-if="!isLoggedIn">Login</router-link>
         </li>
@@ -33,7 +38,8 @@ export default {
   data() {
     return {
       isMenuOpen: false,
-      isLoggedIn: ref(false)
+      isLoggedIn: ref(false),
+      userData: ref({})
     };
   },
   methods: {
@@ -56,12 +62,11 @@ export default {
 
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
+        this.userData = user.providerData[0];
         this.isLoggedIn = true;
       } else {
         this.isLoggedIn = false;
       }
-
-      console.log("isLoggedIn:", this.isLoggedIn); // Remove '.value' property access
     });
   }
 };
@@ -112,6 +117,7 @@ export default {
 
 .menu-item {
   margin-bottom: 5px;
+  color: #0a9;
 }
 
 .menu-item a {
