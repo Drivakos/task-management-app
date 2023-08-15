@@ -22,4 +22,7 @@ npm run lint
 ```
 
 ### Customize configuration
+
+Important Note : you need node 12.16.0 to run this project without issues.
+
 See [Configuration Reference](https://cli.vuejs.org/config/).
